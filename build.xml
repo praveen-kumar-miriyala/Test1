@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="TestRunner" name="automator">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../eclipse/"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="automator.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/ATU_Selenium_WebDriver_Utilities_1.0.jar"/>
+        <pathelement location="lib/commons-beanutils-bean-collections.jar"/>
+        <pathelement location="lib/commons-beanutils-core-1.8.0.jar"/>
+        <pathelement location="lib/commons-codec-1.10.jar"/>
+        <pathelement location="lib/dom4j.jar"/>
+        <pathelement location="lib/log4j-1.2.16.jar"/>
+        <pathelement location="lib/opencsv-3.1.jar"/>
+        <pathelement location="lib/org-apache-commons-codec.jar"/>
+        <pathelement location="lib/org.apache.commons.beanutils.jar"/>
+        <pathelement location="lib/poi-3.9.jar"/>
+        <pathelement location="lib/poi-ooxml-3.7-20101029.jar"/>
+        <pathelement location="lib/poi-ooxml-schemas-3.9.jar"/>
+        <pathelement location="lib/selenium-server-standalone-3.13.0.jar"/>
+        <pathelement location="lib/sikulixapi.jar"/>
+        <pathelement location="lib/tdgssconfig.jar"/>
+        <pathelement location="lib/winium-webdriver-0.1.0-1.jar"/>
+        <pathelement location="lib/xmlbeans-2.3.0.jar"/>
+        <pathelement location="lib/testng_6.13.1.jar"/>
+        <pathelement location="lib/org.apache-extras.beanshell.2.0.0.jar"/>
+        <pathelement location="lib/snakeyaml_1.17.0.jar"/>
+        <pathelement location="lib/jcommander_1.72.0.jar"/>
+    </path>
+    <target depends="clean" name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="framework">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="applications">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="drivers">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="testcases">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+        <target depends="init" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="framework"/>
+            <src path="applications"/>
+            <src path="drivers"/>
+            <src path="testcases"/>
+            <classpath refid="automator.classpath"/>
+        </javac>
+    	 <copy file="lib/config.properties.temp" tofile="config.properties" overwrite="true">
+    	                                        <filterset begintoken="@" endtoken="@">
+    	                                                        <filter token="Index" value="${Index}"/>
+    	                                                        <filter token="Suite" value="${Suite}"/>
+    	                                                        <filter token="Application" value="${Application}"/>
+    	                                                        <filter token="Module" value="${Module}"/>
+    	                                                        <filter token="Testcase" value="${Testcase}"/>
+    	                                                        <filter token="DataStore" value="${DataStore}"/>                                        </filterset>
+    	                        </copy>
+    </target>              	
+    <target depends="build" name="TestRunner">
+        <java classname="com.automator.testrunner.TestRunner" failonerror="true" fork="yes">
+            <classpath refid="automator.classpath"/>
+        </java>
+    </target>
+</project>
